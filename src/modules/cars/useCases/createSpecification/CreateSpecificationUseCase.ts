@@ -11,13 +11,13 @@ interface IRequest {
 class CreateSpecificationUseCase {
   // eslint-disable-next-line prettier/prettier
   constructor(@inject("SpecificationsRepository") private specificationsRepository: ISpecificationsRepository) { }
-  execute({ description, name }: IRequest): void {
+  async execute({ description, name }: IRequest): Promise<void> {
     const specificationAlreadyExist =
-      this.specificationsRepository.findByName(name);
+      await this.specificationsRepository.findByName(name);
     if (specificationAlreadyExist) {
       throw new Error("Specification already Exists!");
     }
-    this.specificationsRepository.create({
+    await this.specificationsRepository.create({
       name,
       description,
     });
